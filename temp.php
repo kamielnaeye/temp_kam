@@ -31,7 +31,6 @@ var cell = row.insertCell(0);
 cell.innerHTML = temp[i];
 var arr2 = [i+1,parseInt(temp[i])];
 arr.push(arr2);
-console.log(arr);
 }
 Row = document.getElementById("row");
 Cells = Row.getElementsByTagName("td");
