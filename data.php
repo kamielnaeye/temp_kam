@@ -9,7 +9,7 @@ $result = $mysqli->query("SELECT * FROM temperature");
 while ($row = $result->fetch_assoc()) {
     array_push($arr, $row["TEMP"]);
 }
-echo json_encode($reeks);
+echo json_encode($arr);
 $mysqli -> close();
 ?>
 

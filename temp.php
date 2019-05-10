@@ -5,11 +5,8 @@
 </tr>
 </thead>
 <tbody>
-<?php
-$.get("data.php",function(data){
-print("<tr>"+"<td>"+JSON.parse(data)[0])+"</td>"+"</tr>");
-});
-?>
+<tr id="row">
+</tr>
 </tbody>
 <div id="linechart_material" style="width: 900px; height: 500px"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -21,15 +18,24 @@ function timedRefresh(timeoutPeriod) {
 }
 window.onload = timedRefresh(60000);
 
-var Row = document.getElementById("row");
-var Cells = Row.getElementsByTagName("td");
+var Row,Cells;
 var oTable = document.getElementById("tabel");
+var temp;
 var arr = [];
-for(var i = 1; i < tabel.rows.length;i++){
-	var oCells = oTable.rows.item(i).cells;
-	var arr2 = [i,parseInt(oCells[0].firstChild.data)];
-	arr.push(arr2);
+$.get("data.php",function(data){
+temp =JSON.parse(data);
+for(var i = 0;i<temp.length;i++){
+var row = oTable.insertRow();
+row.id = "row";
+var cell = row.insertCell(0);
+cell.innerHTML = temp[i];
+var arr2 = [i+1,parseInt(temp[i])];
+arr.push(arr2);
+console.log(arr);
 }
+Row = document.getElementById("row");
+Cells = Row.getElementsByTagName("td");
+});
 google.charts.load('current', {'packages':['line']});
 google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
@@ -49,29 +55,6 @@ var chart = new google.charts.Line(document.getElementById('linechart_material')
 chart.draw(data, google.charts.Line.convertOptions(options));
 }
 });
-function getData(){
-var arrJSON = [];
-var Row = document.getElementById("row");
-var Cells = Row.getElementsByTagName("td");
-var oTable = document.getElementById("tabel");
-        for(var i = 1; i < tabel.rows.length;i++){
-                var oCells = oTable.rows.item(i).cells;
-                 var arr2 ={log: i,temperature: parseInt(oCells[0].firstChild.data)};
-                arrJSON.push(arr2);
-        }
-       	var url = 'https://raspberrypi/data.php';
-	var data = arrJSON;
-
-fetch(url, {
-  method: 'POST', // or 'PUT'
-  body: JSON.stringify(data), // data can be `string` or {object}!
-  headers:{
-    'Content-Type': 'application/json'
-  }
-}).then(res => res.json())
-.then(response => console.log('Success:', JSON.stringify(response)))
-.catch(error => console.error('Error:', error));
-}
 </script>
 </body>
 </html>
